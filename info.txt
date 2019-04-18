@@ -1,0 +1,55 @@
+WEBPACK
+ Es un static module bundler para aplicaciones js modernas. CUando webpack procesa nuestra aplicación, internamente construye un grafico de dependencias que mapea cada modulo del proyecto y genera 1 o mas bundles.
+
+ dependency: cada vez que un archivo depende de otro, webpack lo trata como dependencia. Esto permite a webpack tratar assets no codificados como imagenes o fuentes y proveerlas como dependencias para nuestra aplicacion.
+
+ Cuando webpack procesa nuestra aplicacipn, comienza con una lista de modulos definidos en la linea de comandos o en el archivo de configuracion. Comenzando desde estos puntos de entrada, Webpack recursivamente construye un grafico de dependencias que incluye cada modulo que la app necesita, y maneja todos esos modulos en un pequeño numero de bundles- a menudo uno - para ser cargados en el navegador.
+
+ Modulos: son porciones de codigo con alguna funcionalidad. Cada modulo es una pieza de un programa completo. Webpack soporta modulos escritos en varios lenguajes y preprocesadores, por medio de loaders.
+
+Loaders: describen a Webpack como procesar modulos no-JS and incluir sus dependencias en nuestros bundles. Hay loaders para Coffescript, Typescript, sass, less, ESNext(Babel),etc.
+
+Conceptos claves de Webpack:
+
+Entry: un entry point indica que modulo debe usarse para construir el grafico de dependencias interno. Webpack descubrirá de que otros modulos y librerias depende ese entry point. Por defecto el valor es ./ src/index.js
+
+      module.exports = {
+        entry: './path/to/my/entry/file.js'
+      };
+
+Output: indica a Webpack donde emitir los bundles que crea y como llamarlos. Por defecto es ./ dist/main.js para el archivo principal.
+    const path = require('path');
+
+    module.exports = {
+      entry: './path/to/my/entry/file.js',
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'my-first-webpack.bundle.js'
+      }
+    };
+
+Loaders: Webpack solo entiende JS y JSON. Los loaders permiten procesar otros tipos de archivos y convertirlos en modulos validos para ser consumidos por tu aplicación y añadidos al grafico de dependencias. Tienen 2 propiedades: 
+--test: identifica que archivo/s deben ser transformados.
+--use: identifica que loader debe encargarse de la conversion
+
+const path = require('path');
+
+        module.exports = {
+        output: {
+            filename: 'my-first-webpack.bundle.js'
+        },
+        module: {
+            rules: [
+            { test: /\.txt$/, use: 'raw-loader' }
+            ]
+        }
+        };
+
+Plugins: son usados para varias tareas como optimizacion de bundles, administracion de assets e injection de variables de entorno
+
+Mode: sirven para configurar el entorno (development, production, none), lo que habilita que webpack haga una optimizacion para el entorno correspondiente.
+
+
+BABEL
+
+es un compilador de javascript
