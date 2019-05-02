@@ -53,3 +53,39 @@ Mode: sirven para configurar el entorno (development, production, none), lo que 
 BABEL
 
 es un compilador de javascript
+
+
+MODULOS EN ES6
+
+hay dos tipos de exports:
+--named exports: varios por modulo. Un modulo puede exportar multiples cosas como funciones, vars, etc.
+    export const sqrt = Math.sqrt;
+    export function square(x) {
+        return x * x;
+    }
+
+--default exports: uno por modulo.
+      //------ myFunc.js ------
+    export default function () {} // no semicolon!
+
+    //------ main1.js ------
+    import myFunc from 'myFunc';
+    myFunc();
+
+
+
+ECMAScript 6 provides several styles of importing:
+
+Default import:
+  import localName from 'src/my_lib';
+Namespace import: imports the module as an object (with one property per named export).
+  import * as my_lib from 'src/my_lib';
+Named imports:
+  import { name1, name2 } from 'src/my_lib';
+You can rename named imports:
+
+  // Renaming: import `name1` as `localName1`
+  import { name1 as localName1, name2 } from 'src/my_lib';
+
+  // Renaming: import the default export as `foo`
+  import { default as foo } from 'src/my_lib';
