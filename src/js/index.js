@@ -1,6 +1,8 @@
-import Search from './models/Search'
-import * as searchView from './views/searchView'
-import {elements, renderLoader, clearLoader} from './views/base'
+import Search from './models/Search';
+import Recipe from './models/Recipe'
+import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
+import {elements, renderLoader, clearLoader} from './views/base';
 
 /*Global state of the app*/ 
 const state = {};
@@ -13,11 +15,14 @@ const controlSearch  = async () => {
     searchView.clearInput();
     searchView.clearResults();
     renderLoader(elements.searchRes);
-
-    await state.search.getResults();
-
-    clearLoader();
-    searchView.renderResults(state.search.result);
+    try {
+      await state.search.getResults();
+      clearLoader();
+      searchView.renderResults(state.search.result);
+    } catch (error) {
+      alert(error);
+      clearLoader();
+    }
   }
 };
 
@@ -37,3 +42,36 @@ elements.searchResPages.addEventListener('click', e=>{
 //backtick: AltGr + } + space
 //avoid cors: crossorigin.me
 
+//RECIPE CONTROLLER
+const controlRecipe = async () => {
+  //get id from url
+  const id = window.location.hash.replace('#', '');
+  if(id){
+    // prepare ui for changes
+    recipeView.clearRecipe();
+    renderLoader(elements.recipe);
+
+    if(state.search) searchView.highlightSelected(id);
+
+    //create new recipe object
+    state.recipe = new Recipe(id);
+    try {
+      //get recipe data
+      await state.recipe.getRecipe();
+      state.recipe.parseIngredients();
+      //calculate servings and time
+      state.recipe.calcTime();
+      state.recipe.calcServings();
+      //render recipe
+      console.log(state.recipe);
+      clearLoader();
+      recipeView.renderRecipe(state.recipe);
+    } catch (error) {
+      alert(error);
+    }
+    
+  }
+}
+
+//window.addEventListener('hashchange', controlRecipe);
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
